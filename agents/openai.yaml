@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Framework"
+  short_description: "A methodology for structured project execution"
+  default_prompt: "Use $project-framework to establish a project workflow for scope, planning, execution, verification and durable context, adapted to the existing tools and conventions."

@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "SessionStart": [{
+      "matcher": "startup|resume|clear|compact|fork",
+      "hooks": [{
+        "type": "command",
+        "command": "PY=python3; command -v python3 >/dev/null 2>&1 || PY=python; \"$PY\" \"$(git rev-parse --show-toplevel)/scripts/preflight.py\" hook --client codex",
+        "timeout": 25
+      }]
+    }]
+  }
+}

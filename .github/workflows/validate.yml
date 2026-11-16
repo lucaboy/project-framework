@@ -1,0 +1,64 @@
+name: Validate framework
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  suite:
+    name: Full suite (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.10'
+          - os: ubuntu-latest
+            python: '3.14'
+          - os: macos-15-intel
+            python: '3.14'
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests -v
+
+  windows-core:
+    name: Windows core workflows (Python 3.14)
+    runs-on: windows-latest
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      PYTHONPATH: tests
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
+      # POSIX signal/process and shell-hook tests belong to the full Unix suite.
+      # This job exercises native Windows file updates, locks, Unicode and Git handoffs.
+      - run: >-
+          python -m unittest -v test_adoption test_release
+          test_framework.ProjectTests.test_dry_run_does_not_create_destination
+          test_framework.ProjectTests.test_provider_and_tracker_profiles
+          test_framework.ProjectTests.test_complete_skill_installation_for_both_clients
+          test_framework.ProjectTests.test_init_is_idempotent_and_preserves_project_configuration
+          test_portability.PortabilityTests.test_update_accepts_files_checked_out_with_windows_line_endings
+          test_portability.PortabilityTests.test_programs_are_resolved_like_a_shell_would

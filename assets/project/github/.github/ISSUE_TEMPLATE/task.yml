@@ -1,0 +1,17 @@
+name: Task
+description: One bounded technical or business outcome
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome and acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope, references and dependencies
+  - type: textarea
+    id: handoff
+    attributes:
+      label: Owner, checkpoint and evidence

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": ["Read(./.env)", "Read(./.env.local)", "Read(./secrets/**)"]
+  },
+  "hooks": {
+    "SessionStart": [{
+      "matcher": "startup|resume|clear|compact|fork",
+      "hooks": [{
+        "type": "command",
+        "command": "PY=python3; command -v python3 >/dev/null 2>&1 || PY=python; \"$PY\" \"${CLAUDE_PROJECT_DIR}/scripts/preflight.py\" hook --client claude",
+        "timeout": 25
+      }]
+    }]
+  }
+}

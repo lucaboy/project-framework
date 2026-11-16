@@ -1,0 +1,3 @@
+# The client loads this configuration only for a trusted project.
+[features]
+hooks = true

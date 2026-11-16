@@ -1,0 +1,20 @@
+# The full image includes Git: verify needs it to leave files ignored by .gitignore out of the fingerprint.
+image: python:3.12
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          name: Project checks
+          max-time: 15
+          script:
+            # Add runtime setup and locked dependency installation for the selected stack here.
+            - python3 scripts/project.py doctor
+            - python3 scripts/project.py verify
+  branches:
+    main:
+      - step:
+          name: Main checks
+          max-time: 15
+          script:
+            - python3 scripts/project.py doctor
+            - python3 scripts/project.py verify

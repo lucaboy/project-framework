@@ -1,0 +1,12 @@
+schema: spec-driven
+context: |
+  Use the confirmed content_language in .project/config.json for artifacts.
+  If unset, suggest the user's language and ask for confirmation before drafting artifacts.
+  Keep technical identifiers and paths unchanged. Do not automatically translate existing content.
+  The tracker in .project/config.json is authoritative for tasks.
+  Read docs/INDEX.md and only the references needed for the change.
+  Respect project contracts and define observable acceptance criteria.
+rules:
+  tasks:
+    - Link the issue and distinguish dependencies, implementation and verification.
+    - Maintain checkpoints using .project/WORKFLOW.md without duplicating the backlog.
