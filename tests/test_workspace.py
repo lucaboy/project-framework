@@ -225,6 +225,36 @@ class WorkspaceTests(base.ProjectFixture):
         self.assertEqual(run(self.script, "hub", "--text").stdout, markdown)
         self.assertIn("Hub: " + hub, run(self.script, "status", "--text").stdout)
 
+    def test_map_preserves_secondary_boards_and_documents_after_regeneration(self):
+        self.workspace()
+        path = self.project / ".project/config.json"
+        config = json.loads(path.read_text())
+        config["integrations"]["jira_project_key"] = "DEV"
+        links = [
+            {"title": "Development", "project_key": "DEV", "url": "https://example.invalid/boards/3"},
+            {"title": "Commercial", "project_key": "ADS", "url": "https://example.invalid/boards/4"},
+            {"title": "Source index", "url": "https://example.invalid/docs/INDEX.md"},
+        ]
+        config["map_links"] = links
+        path.write_text(json.dumps(config))
+        draft = json.loads(run(self.script, "hub").stdout)
+        self.assertEqual(draft["manifest"]["tracker"]["project_key"], "DEV")
+        self.assertEqual(draft["manifest"]["map_links"], links)
+        prose = draft["markdown"].split("```json")[0]
+        for link in links:
+            self.assertIn(link["url"], prose)
+        self.assertEqual(run(self.script, "hub", "--text").stdout, draft["markdown"])
+
+    def test_map_rejects_malformed_links(self):
+        self.workspace()
+        path = self.project / ".project/config.json"
+        config = json.loads(path.read_text())
+        for url in ["https://example.invalid/a b", "https://example.invalid/a>b", "file:///tmp/link"]:
+            with self.subTest(url=url):
+                config["map_links"] = [{"title": "Board", "url": url}]
+                path.write_text(json.dumps(config))
+                self.assertEqual(run(self.script, "hub").returncode, 2)
+
     def test_generated_project_ships_the_guide_the_reviewer_and_the_deny_rules(self):
         script = self.create()
         for name in ("docs/GUIDE.md", ".project/TEMPLATES.md", ".project/REVIEW.md", ".claude/agents/reviewer.md"):

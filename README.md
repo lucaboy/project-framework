@@ -1,6 +1,6 @@
 # Project Framework
 
-**Version 1.0.0 · First public release · MIT · Python >=3.10**
+**Version 1.0.1 · MIT · Python >=3.10**
 
 A methodological framework for agent-assisted project work. It defines how to establish intent, scope a task, plan changes, execute them, verify outcomes and preserve the decisions needed to continue.
 
