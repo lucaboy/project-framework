@@ -48,3 +48,7 @@ Use the diagram guidance in `.project/TEMPLATES.md`. The package does not bundle
 - If the app is absent, publish an image exported from the versioned source, with a source link and text explanation. Installation is a separate user choice. Human edits to embedded diagrams require reconciliation back to the canonical source before the next generated update; there is no automatic two-way sync.
 
 External documentation: [sources.md](sources.md).
+
+### Additional links on the project map
+
+In `.project/config.json`, set the optional top-level `map_links` array to keep additional boards and handoff documents when regenerating the map. Each entry has a one-line `title` and an HTTPS `url`. For a Jira board also set `project_key`. For example, `{"title":"Commercial board","url":"https://example.atlassian.net/jira/software/projects/ADS/boards/4","project_key":"ADS"}`. The generator includes these links in the draft and its JSON manifest. The configured primary tracker still governs the default preflight.

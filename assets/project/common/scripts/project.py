@@ -172,6 +172,21 @@ def config():
                 or entry.get("type") not in DOCUMENT_TYPES or not isinstance(entry.get("source") or "", str)):
             raise ValueError("Document has an invalid id, type or source.")
         identifiers.add(entry["id"])
+    navigation = value.get("map_links", [])
+    if not isinstance(navigation, list):
+        raise ValueError("map_links must be a list of named HTTPS links.")
+    for link in navigation:
+        if not isinstance(link, dict) or not isinstance(link.get("title"), str) or not isinstance(link.get("url"), str):
+            raise ValueError("Each map link needs a title and an HTTPS URL.")
+        one_line(link["title"], 160)
+        if set(link) - {"title", "url", "project_key"}:
+            raise ValueError("Unknown map link field.")
+        if any(c.isspace() or c in "<>" for c in link["url"]):
+            raise ValueError("Encode spaces and angle brackets in map link URLs.")
+        validate_https(link["url"])
+        if "project_key" in link and (not isinstance(link["project_key"], str)
+                                      or not re.fullmatch(r"[A-Z][A-Z0-9_]{1,19}", link["project_key"])):
+            raise ValueError("Invalid Jira project key in map_links.")
     automation = value.setdefault("automation", {})
     for key in ("tracker", "documentation"):
         if automation.setdefault(key, "guided") not in AUTOMATION:
@@ -810,6 +825,12 @@ def hub(args):
               f"- **Starting point for agents**: {links['repository_url'] or 'not linked'} "
               f"({start}: clone it and open the chat at its root)",
               "- **Working together**: `docs/GUIDE.md` in the same repository", ""]
+    if value.get("map_links"):
+        manifest["map_links"] = value["map_links"]
+        lines.append("Project navigation:")
+        for link in value["map_links"]:
+            lines.append(f"- {link['title']}: <{link['url']}>")
+        lines.append("")
     if value["repositories"]:
         lines += ["| Repository | Role | URL |", "| --- | --- | --- |"]
         lines += [f"| {entry['name']} | {entry.get('role', '')} | {entry.get('url', '')} |" for entry in value["repositories"]]
