@@ -1,10 +1,12 @@
 # Project Framework
 
-**Version 1.0.1 · MIT · Python >=3.10**
+**Version 1.1.0 · MIT · Python >=3.10**
 
 A methodological framework for agent-assisted project work. It defines how to establish intent, scope a task, plan changes, execute them, verify outcomes and preserve the decisions needed to continue.
 
 The method is expressed as project instructions, reusable templates and executable checks. It can be introduced into an existing project or used from the start. The skill configures the workflow; generated project instructions guide its day-to-day application.
+
+During setup, the maintainer can opt into a [credential workflow](references/secrets.md) for personal identities, project environments and delegated operations. The project records the choice for subsequent sessions.
 
 ## How it works
 
