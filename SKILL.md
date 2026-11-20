@@ -39,6 +39,10 @@ For creation, adoption, update and interruption recovery, read [references/proce
 7. Run `doctor`, session `preflight --live`, actual client read probes where required, and `verify`. Distinguish structural readiness, application verification, configured hooks and actual client activation. Report `not_configured`, `not_verified`, failed and pending outcomes explicitly.
 8. For existing projects, offer content onboarding after local setup: [references/onboarding.md](references/onboarding.md). Propose the page tree, grounded drafts and outstanding work before creating remote pages or tickets. Prior permission for local adoption does not authorize publication.
 
+## Optional credential management
+
+During setup or adoption, ask once whether the user wants a secrets workflow and reuse their recorded choice on resume. When enabled, or when revising an existing choice, follow [references/secrets.md](references/secrets.md).
+
 ## Delivery and maintenance
 
 Report the actual version, local changes, commands/results, confirmed or pending language, and remaining client/service checks. Never turn a saved URL, manual attestation or passing structural check into a claim of verified service behavior.
