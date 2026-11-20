@@ -1,0 +1,9 @@
+# Optional project credentials
+
+Ask whether the project should use its existing password manager, encrypted Git files (for example SOPS with age), another provider, or no integration. Before enabling it agree on owners, actual environments, storage destination and the operations delegated to agents. Reuse explicit choices. Record the choice and operational entry points in the workspace instructions. A decline requires no new tooling.
+
+Keep personal identities under the person's control. Give each environment its own encrypted files and authorized recipients. Repository membership alone must not grant decryption. Publish only ciphertext, public recipients and operating instructions. Keep a separately recoverable identity under its owner's control, and test recovery before retiring the previous copy.
+
+For unattended operations, give the agent a scoped connector or a fixed operation in a separately controlled execution identity. That identity owns the credential and returns only the required result. An unrestricted shell, inherited environment, accessible key file, editable helper, inspectable browser session or unrestricted proxy can expose credentials. Validate destination, operation, arguments and sanitized output. Scope any SSH account on the server as well as its key. A personal SSH recovery copy is independent of the runtime identity. Ask again only when extending the agreed permissions.
+
+Check with synthetic secrets first. Test successful use, wrong recipient or environment, forbidden operation and a recovery round trip. Verify the specific live read where authorized. Record tested operations, administrative recovery instructions and any remaining dependency without secret values. Distinguish an encrypted backup from enforced agent isolation and from a verified live integration. Removal of a recipient cannot revoke old ciphertext or credentials they already obtained.
